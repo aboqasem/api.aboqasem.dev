@@ -1,14 +1,15 @@
-const express = require('express');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import express from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+import indexRouter from './routes/index';
+import articlesRouter from './routes/articles';
+import middlewares from './middlewares';
 
-const indexRouter = require('./routes/index');
-const articlesRouter = require('./routes/articles');
-const middlewares = require('./middlewares');
+dotenv.config();
 
 const app = express();
 

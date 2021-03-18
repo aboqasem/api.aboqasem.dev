@@ -1,10 +1,9 @@
-const express = require('express');
+import express from 'express';
+import Article from '../models/Article';
 
 const router = express.Router();
 
-const Article = require('../models/Article');
-
-router.get('/', async (req, res, next) => {
+router.get('/', async (req: any, res: any, next: any) => {
   await Article.find({}, (error, articles) => {
     if (!error) {
       return res.json(articles);
@@ -26,4 +25,4 @@ router.get('/', async (req, res, next) => {
 //   });
 // });
 
-module.exports = router;
+export default router;
