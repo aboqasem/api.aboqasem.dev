@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import indexRouter from './routes/index';
-import articlesRouter from './routes/articles';
+import postsRouter from './routes/posts';
 import middlewares from './middlewares';
 
 dotenv.config();
@@ -21,14 +21,10 @@ mongoose.connect(process.env.DB || 'mongodb://localhost/portfolio', {
 app.use(express.json());
 app.use(morgan('common'));
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost',
-  }),
-);
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost/' }));
 
 app.use('/', indexRouter);
-app.use('/api/articles', articlesRouter);
+app.use('/posts', postsRouter);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
@@ -36,7 +32,6 @@ app.use(middlewares.errorHandler);
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   if (process.env.NODE_ENV === 'dev') {
-    // eslint-disable-next-line no-console
-    console.log(`Listening on http://localhost:${port}`);
+    console.log(`Listening on http://localhost:${port}/`);
   }
 });
