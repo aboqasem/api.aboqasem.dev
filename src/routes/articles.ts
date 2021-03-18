@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import Article from '../models/Article';
 
 const router = express.Router();
 
-router.get('/', async (req: any, res: any, next: any) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   await Article.find({}, (error, articles) => {
     if (!error) {
       return res.json(articles);
