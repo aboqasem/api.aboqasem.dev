@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import Post from '../models/Post';
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   if (req.body.secretKey !== process.env.SECRET_KEY) return res.json({ message: 'Unauthorized access!' });
   const post = new Post(req.body);
-  post.save((error) => {
+  return post.save((error) => {
     if (!error) {
       return res.json(post);
     }
