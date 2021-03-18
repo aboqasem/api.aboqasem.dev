@@ -4,8 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-require('dotenv')
-  .config();
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const articlesRouter = require('./routes/articles');
@@ -22,9 +21,11 @@ mongoose.connect(process.env.DB || 'mongodb://localhost/portfolio', {
 app.use(express.json());
 app.use(morgan('common'));
 app.use(helmet());
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost',
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost',
+  }),
+);
 
 app.use('/', indexRouter);
 app.use('/api/articles', articlesRouter);
@@ -35,7 +36,8 @@ app.use(middlewares.errorHandler);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'dev') {
+    // eslint-disable-next-line no-console
     console.log(`Listening on http://localhost:${port}`);
   }
 });
