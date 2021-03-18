@@ -13,17 +13,17 @@ router.get('/', async (req, res, next) => {
   });
 });
 
-router.post('/', async (req, res, next) => {
-  const article = new Article(req.body);
-  await article.save((error) => {
-    if (!error) {
-      return res.json(article);
-    }
-    if (error.name === 'ValidationError') {
-      res.status(422);
-    }
-    return next(error);
-  });
-});
+// router.post('/', async (req, res, next) => {
+//   const article = new Article(req.body);
+//   await article.save((error) => {
+//     if (!error) {
+//       return res.json(article);
+//     }
+//     if (error.name === 'ValidationError') {
+//       res.status(422);
+//     }
+//     return next(error);
+//   });
+// });
 
 module.exports = router;

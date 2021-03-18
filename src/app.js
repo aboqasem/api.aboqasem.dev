@@ -8,7 +8,6 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const articlesRouter = require('./routes/articles');
-const projectsRouter = require('./routes/projects');
 const middlewares = require('./middlewares');
 
 const app = express();
@@ -29,7 +28,6 @@ app.use(
 
 app.use('/', indexRouter);
 app.use('/api/articles', articlesRouter);
-app.use('/api/projects', projectsRouter);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
