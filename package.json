@@ -4,15 +4,15 @@
   "description": "API for my portfolio.",
   "main": "build/app.js",
   "scripts": {
+    "postinstall": "npm run build",
     "build": "tsc",
-    "prestart": "npm run build",
     "start": "node build/app.js",
     "dev": "nodemon",
     "lint": "eslint src/ --ext .js,.ts --fix --quiet"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Mohammad Al Zouabi",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
