@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -5,11 +6,12 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 import indexRouter from './routes/index';
 import postsRouter from './routes/posts';
 import middlewares from './middlewares';
-
-dotenv.config();
+import { __DEV__ } from './constants';
 
 const app = express();
 
@@ -31,7 +33,8 @@ app.use(middlewares.errorHandler);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  if (process.env.NODE_ENV === 'dev') {
+  if (__DEV__) {
+    // eslint-disable-next-line no-console
     console.log(`Listening on http://localhost:${port}/`);
   }
 });
