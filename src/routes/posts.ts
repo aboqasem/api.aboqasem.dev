@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { kSecretKey } from '../constants';
 import Post from '../models/Post';
 
 const router = express.Router();
@@ -25,7 +26,7 @@ router
     });
   })
   .post('/', (req, res, next) => {
-    if (req.body.secretKey !== process.env.SECRET_KEY) return res.json({ message: 'Unauthorized access!' });
+    if (req.body.secretKey !== kSecretKey) return res.json({ message: 'Unauthorized access!' });
     const post = new Post(req.body);
     return post.save((error) => {
       if (!error) {

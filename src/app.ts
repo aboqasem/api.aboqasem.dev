@@ -11,11 +11,11 @@ dotenv.config();
 import indexRouter from './routes/index';
 import postsRouter from './routes/posts';
 import middlewares from './middlewares';
-import { __DEV__ } from './constants';
+import { kCorsOrigin, kDbUrl, kPort, __DEV__ } from './constants';
 
 const app = express();
 
-mongoose.connect(process.env.DB || 'mongodb://localhost/portfolio', {
+mongoose.connect(kDbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -23,7 +23,7 @@ mongoose.connect(process.env.DB || 'mongodb://localhost/portfolio', {
 app.use(express.json());
 app.use(morgan('common'));
 app.use(helmet());
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost/' }));
+app.use(cors({ origin: kCorsOrigin }));
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
@@ -31,10 +31,9 @@ app.use('/posts', postsRouter);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
+app.listen(kPort, () => {
   if (__DEV__) {
     // eslint-disable-next-line no-console
-    console.log(`Listening on http://localhost:${port}/`);
+    console.log(`Listening on http://localhost:${kPort}/`);
   }
 });
