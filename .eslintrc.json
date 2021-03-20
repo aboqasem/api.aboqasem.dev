@@ -22,6 +22,8 @@
     "no-plusplus": "off",
     "linebreak-style": "off",
     "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "func-names": "off",
     "prettier/prettier": [
       "error",
       {

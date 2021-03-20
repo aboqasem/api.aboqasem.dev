@@ -1,14 +1,12 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import { kSecretKey } from '../constants';
-import Post from '../models/Post';
+import Post, { IPostDocument } from '../models/Post';
 
 const router = express.Router();
 
 const cachingTime = 20 * 60 * 1000;
 let cacheTime: number;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let cachedPosts: mongoose.Document<any, Record<string, unknown>>[];
+let cachedPosts: IPostDocument[];
 
 router
   .get('/', (req, res, next) => {
@@ -17,25 +15,27 @@ router
     }
 
     return Post.find({}, (error, newPosts) => {
-      if (!error) {
-        cacheTime = Date.now();
-        cachedPosts = newPosts;
-        return res.json(newPosts);
-      }
-      return next(error);
+      if (error) return next(error);
+
+      cacheTime = Date.now();
+      cachedPosts = newPosts;
+      return res.json(newPosts);
     });
   })
   .post('/', (req, res, next) => {
-    if (req.body.secretKey !== kSecretKey) return res.json({ message: 'Unauthorized access!' });
+    if (req.body.secretKey !== kSecretKey) {
+      res.status(401);
+      return res.json({ message: 'Unauthorized access!' });
+    }
+
     const post = new Post(req.body);
     return post.save((error) => {
-      if (!error) {
-        return res.json(post);
+      if (error) {
+        if (error.name === 'ValidationError') res.status(422);
+        return next(error);
       }
-      if (error.name === 'ValidationError') {
-        res.status(422);
-      }
-      return next(error);
+
+      return res.json(post);
     });
   });
 
