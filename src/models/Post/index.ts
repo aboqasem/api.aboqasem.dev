@@ -21,6 +21,18 @@ const PostSchema = new Schema<IPostDocument, IPostModel, IPost>(
   },
 );
 
+PostSchema.static('toClient', ((post) => {
+  const { title, content, img, createdAt, updatedAt } = post;
+  return {
+    id: post._id,
+    title,
+    content,
+    img,
+    createdAt,
+    updatedAt,
+  };
+}) as IPostModel['toClient']);
+
 const Post = mongoose.model('Post', PostSchema);
 
 export * from './types';

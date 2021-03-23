@@ -1,4 +1,4 @@
-import { Document, Model } from 'mongoose';
+import { Document, LeanDocument, Model } from 'mongoose';
 
 export interface IPost {
   title: string;
@@ -13,5 +13,14 @@ export interface IPostDocument extends IPost, Document {
 }
 
 export interface IPostModel extends Model<IPostDocument> {
-  // static methods go here
+  toClient(post: IPostDocument | LeanDocument<IPostDocument>): IClientPost;
+}
+
+export interface IClientPost {
+  id: string;
+  title: string;
+  content: string;
+  img?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

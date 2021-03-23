@@ -1,13 +1,12 @@
 import express from 'express';
-import { LeanDocument } from 'mongoose';
 import { kSecretKey } from '../constants';
-import Post, { IPostDocument } from '../models/Post';
+import Post, { IClientPost } from '../models/Post';
 
 const router = express.Router();
 
 const cachingTime = 20 * 60 * 1000;
 let cacheTime: number;
-let cachedPosts: LeanDocument<IPostDocument>[];
+let cachedPosts: IClientPost[];
 
 router
   .get('/', (req, res, next) => {
@@ -19,8 +18,8 @@ router
       .lean()
       .then((newPosts) => {
         cacheTime = Date.now();
-        cachedPosts = newPosts;
-        return res.json(newPosts);
+        cachedPosts = newPosts.map((post) => Post.toClient(post));
+        return res.json(cachedPosts);
       })
       .catch((error) => next(error));
   })
@@ -37,7 +36,7 @@ router
         return next(error);
       }
 
-      return res.json(post);
+      return res.json(Post.toClient(post));
     });
   });
 
