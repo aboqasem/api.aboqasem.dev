@@ -1,16 +1,15 @@
 import express from 'express';
-import { kSecretKey } from '../constants';
+import { kCachingTime, kSecretKey } from '../constants';
 import Post, { IClientPost } from '../models/Post';
 
 const router = express.Router();
 
-const cachingTime = 20 * 60 * 1000;
 let cacheTime: number;
 let cachedPosts: IClientPost[];
 
 router
   .get('/', (req, res, next) => {
-    if (cacheTime && Date.now() - cacheTime < cachingTime) {
+    if (cacheTime && Date.now() - cacheTime < kCachingTime) {
       return res.json(cachedPosts);
     }
 
