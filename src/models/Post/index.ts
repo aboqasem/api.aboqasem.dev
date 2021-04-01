@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+
 import { IPost, IPostDocument, IPostModel } from './types';
 
 const PostSchema = new Schema<IPostDocument, IPostModel, IPost>(

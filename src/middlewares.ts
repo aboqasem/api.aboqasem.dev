@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+
 import { __DEV__ } from './constants';
 
 const notFound = (req: Request, res: Response, next: NextFunction): void => {

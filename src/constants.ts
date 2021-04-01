@@ -1,6 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const { NODE_ENV, PORT, CORS_ORIGIN, DB_URL, SECRET_KEY, CACHING_TIME } = process.env;
 
 export const __DEV__ = NODE_ENV === 'development';

@@ -1,17 +1,13 @@
-/* eslint-disable import/first */
-import express from 'express';
-import morgan from 'morgan';
-import helmet from 'helmet';
 import cors from 'cors';
+import express from 'express';
+import helmet from 'helmet';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import morgan from 'morgan';
 
-dotenv.config();
-
+import { __DEV__, kCorsOrigin, kDbUrl, kPort } from './constants';
+import middlewares from './middlewares';
 import indexRouter from './routes/index';
 import postsRouter from './routes/posts';
-import middlewares from './middlewares';
-import { kCorsOrigin, kDbUrl, kPort, __DEV__ } from './constants';
 
 const app = express();
 

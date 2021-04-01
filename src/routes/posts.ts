@@ -1,4 +1,5 @@
 import express from 'express';
+
 import { kCachingTime, kSecretKey } from '../constants';
 import Post, { IClientPost } from '../models/Post';
 
