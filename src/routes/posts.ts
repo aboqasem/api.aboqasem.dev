@@ -1,26 +1,15 @@
 import express from 'express';
 
-import { kCachingTime, kSecretKey } from '../constants';
-import Post, { IClientPost } from '../models/Post';
+import { kSecretKey } from '../constants';
+import Post from '../models/Post';
 
 const router = express.Router();
 
-let cacheTime: number;
-let cachedPosts: IClientPost[];
-
 router
   .get('/', (req, res, next) => {
-    if (cacheTime && Date.now() - cacheTime < kCachingTime) {
-      return res.json(cachedPosts);
-    }
-
     return Post.find({})
       .lean()
-      .then((newPosts) => {
-        cacheTime = Date.now();
-        cachedPosts = newPosts.map((post) => Post.toClient(post));
-        return res.json(cachedPosts);
-      })
+      .then((posts) => res.json(posts.map((post) => Post.toClient(post))))
       .catch((error) => next(error));
   })
   .get('/:id', async (req, res, next) => {
