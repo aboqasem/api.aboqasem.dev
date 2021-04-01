@@ -23,6 +23,22 @@ router
       })
       .catch((error) => next(error));
   })
+  .get('/:id', async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      const post = await Post.findById(id).lean();
+      if (!post) {
+        res.status(404);
+        return next(new Error('Post not found.'));
+      }
+
+      return res.json(Post.toClient(post));
+    } catch (error) {
+      res.status(400);
+      return next(error);
+    }
+  })
   .post('/', (req, res, next) => {
     if (req.body.secretKey !== kSecretKey) {
       res.status(401);
