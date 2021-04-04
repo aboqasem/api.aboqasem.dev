@@ -6,11 +6,13 @@ import Post from '../models/Post';
 const router = express.Router();
 
 router
-  .get('/', (req, res, next) => {
-    return Post.find({})
-      .lean()
-      .then((posts) => res.json(posts.map((post) => Post.toClient(post))))
-      .catch((error) => next(error));
+  .get('/', async (_req, res, next) => {
+    try {
+      const posts = await Post.find({}).lean();
+      return res.json(posts.map((post) => Post.toClient(post)));
+    } catch (error) {
+      return next(error);
+    }
   })
   .get('/:id', async (req, res, next) => {
     const { id } = req.params;
@@ -28,21 +30,20 @@ router
       return next(error);
     }
   })
-  .post('/', (req, res, next) => {
-    if (req.body.secretKey !== kSecretKey) {
+  .post('/', async (req, res, next) => {
+    if (!(req.body.secretKey || req.body.secretKey === kSecretKey)) {
       res.status(401);
       return res.json({ message: 'Unauthorized access!' });
     }
 
     const post = new Post(req.body);
-    return post.save((error) => {
-      if (error) {
-        if (error.name === 'ValidationError') res.status(422);
-        return next(error);
-      }
-
+    try {
+      await post.save();
       return res.json(Post.toClient(post));
-    });
+    } catch (error) {
+      if (error.name === 'ValidationError') res.status(422);
+      return next(error);
+    }
   });
 
 export default router;
